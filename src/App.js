@@ -22,7 +22,7 @@ const App = () => {
     // Function to fetch the companies data from the API
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/companies');
+        const response = await axios.get('https://react-based-calendar-application.onrender.com/companies');
         setCompanies(response.data); // Set companies data in state
         setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
