@@ -18,7 +18,7 @@ const DashboardTable = () => {
 
   const fetchCompanies = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/companies');
+      const response = await axios.get('https://react-based-calendar-application.onrender.com/companies');
       setCompanies(response.data);
     } catch (error) {
       console.error('Error fetching companies:', error);
