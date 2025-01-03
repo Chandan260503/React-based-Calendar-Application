@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const DashboardTable = () => {
   const [companies, setCompanies] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [newCommunication, setNewCommunication] = useState({
-    type: '',
-    date: '',
-    notes: '',
+    type: "",
+    date: "",
+    notes: "",
   });
 
   // Fetch companies when the component mounts
@@ -18,10 +18,12 @@ const DashboardTable = () => {
 
   const fetchCompanies = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/companies');
+      const response = await axios.get(
+        "https://react-based-calendar-application.onrender.com/companies"
+      );
       setCompanies(response.data);
     } catch (error) {
-      console.error('Error fetching companies:', error);
+      console.error("Error fetching companies:", error);
     }
   };
 
@@ -35,7 +37,7 @@ const DashboardTable = () => {
   const handleCloseModal = () => {
     setSelectedCompany(null);
     setShowModal(false);
-    setNewCommunication({ type: '', date: '', notes: '' });
+    setNewCommunication({ type: "", date: "", notes: "" });
   };
 
   // Handle form input changes
@@ -47,7 +49,7 @@ const DashboardTable = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(selectedCompany);
-  
+
     if (selectedCompany) {
       // Prepare the communication data to append
       const communicationData = {
@@ -57,7 +59,7 @@ const DashboardTable = () => {
         companyId: selectedCompany.id, // Include company ID
         companyName: selectedCompany.name, // Include company name
       };
-  
+
       // Append the new communication directly to the selected company's lastCommunications
       const updatedCompanies = companies.map((company) =>
         company.id === selectedCompany.id
@@ -70,23 +72,24 @@ const DashboardTable = () => {
             }
           : company
       );
-  
+
       // Update the companies state with the new communication
       setCompanies(updatedCompanies);
-      
+
       // Close the modal after submission (if applicable)
       handleCloseModal();
     }
   };
-  
+
   // Function to get the color class based on the scheduled date
   const getColorClass = (date) => {
     const now = new Date();
     const scheduledDate = new Date(date);
 
-    if (scheduledDate < now) return 'bg-red-100'; // Overdue
-    if (scheduledDate.toDateString() === now.toDateString()) return 'bg-yellow-100'; // Due today
-    return 'bg-green-100'; // Upcoming
+    if (scheduledDate < now) return "bg-red-100"; // Overdue
+    if (scheduledDate.toDateString() === now.toDateString())
+      return "bg-yellow-100"; // Due today
+    return "bg-green-100"; // Upcoming
   };
 
   return (
@@ -103,7 +106,10 @@ const DashboardTable = () => {
         </thead>
         <tbody>
           {companies.map((company) => (
-            <tr key={company.id} className={getColorClass(company.nextCommunication)}>
+            <tr
+              key={company.id}
+              className={getColorClass(company.nextCommunication)}
+            >
               <td className="border p-2">{company.name}</td>
               <td className="border p-2">
                 {(company.lastCommunications || []).map((comm, index) => (
@@ -112,7 +118,9 @@ const DashboardTable = () => {
                   </div>
                 ))}
               </td>
-              <td className="border p-2">{company.nextCommunication || 'Not Scheduled'}</td>
+              <td className="border p-2">
+                {company.nextCommunication || "Not Scheduled"}
+              </td>
               <td className="border p-2">
                 <button
                   className="bg-blue-500 text-white p-2 rounded"
@@ -132,7 +140,9 @@ const DashboardTable = () => {
             <h2 className="text-lg font-bold mb-4">Log New Communication</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="block font-bold mb-2">Type of Communication</label>
+                <label className="block font-bold mb-2">
+                  Type of Communication
+                </label>
                 <select
                   name="type"
                   value={newCommunication.type}
@@ -147,7 +157,9 @@ const DashboardTable = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label className="block font-bold mb-2">Date of Communication</label>
+                <label className="block font-bold mb-2">
+                  Date of Communication
+                </label>
                 <input
                   type="date"
                   name="date"
@@ -176,7 +188,10 @@ const DashboardTable = () => {
                 >
                   Cancel
                 </button>
-                <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white p-2 rounded"
+                >
                   Submit
                 </button>
               </div>
